@@ -14,5 +14,12 @@ const PORT = process.env.PORT || 5000;
 // Make a request to "http://localhost:5000" on postman and you'll see
 app.get("/", (req, res) => res.send("API Running"));
 
+// Define Routes
+// All the routes on ./routes/api/users are behind the main route /api/users
+app.use("/api/users", require("./routes/api/users"));
+app.use("/api/auth", require("./routes/api/auth"));
+app.use("/api/profile", require("./routes/api/profile"));
+app.use("/api/posts", require("./routes/api/posts"));
+
 // THe () => is a callback.
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
