@@ -6,6 +6,10 @@ const app = express();
 // Connect database
 connectDB();
 
+// Init Middleware
+// Ask the server to accept JSON objects in the body of the POST/GET requests
+app.use(express.json({ extended: false }));
+
 // If there's no env variable called port, used port 5000
 const PORT = process.env.PORT || 5000;
 
