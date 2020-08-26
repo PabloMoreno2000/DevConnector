@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const gravatar = require("gravatar");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const config = require("config");
 // Exporting two objects
 const { check, validationResult } = require("express-validator/check");
 
@@ -63,9 +65,29 @@ router.post(
       user.password = await bcrypt.hash(password, salt);
       // Remember that User is a moongose model and we connected moongose with our database
       await user.save();
-      // TODO: Return jsonwebtoken (useful to log in users right away when registered)
 
-      res.send("User registered");
+      const payload = {
+        user: {
+          id: user.id, // Moongose gets the id of the database
+        },
+      };
+
+      // Generate a JSON Web Token (encrypted payload with signature)
+      jwt.sign(
+        payload,
+        config.get("jwtSecret"), // encryption key
+        { expiresIn: 360000 },
+        // Callback
+        (err, token) => {
+          // If there's an error, throw it
+          if (err) throw err;
+          // Else, set in the json of the response this web token with
+          // the user id that can be used for authentication after sign up
+          res.json({ token });
+        }
+      );
+
+      // res.send("User registered");
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server error");
