@@ -1,6 +1,9 @@
 const jwt = require("jsonwebtoken");
 const config = require("config");
 
+// Given a JSON web token representing a user, put the user mongoose model in the request
+// For any path that uses this middleware function.
+
 // next is a callback we have to run once we are done. Typically used in middleware
 module.exports = function (req, res, next) {
   // Get token from header
