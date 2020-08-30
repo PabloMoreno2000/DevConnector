@@ -120,10 +120,37 @@ router.get("/", async (req, res) => {
   try {
     // Populate puts the specified data in the user object were
     // We previously had the mongo reference
-    profiles = await Profile.find().populate("user", ["name", "avatar"]);
+    const profiles = await Profile.find().populate("user", ["name", "avatar"]);
     res.json(profiles);
   } catch (err) {
     console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route  GET api/profile/yser/:user_id
+// @desct  Get profile by user Id
+// @access Public
+// ":user_id" is a placeholder
+router.get("/user/:user_id", async (req, res) => {
+  try {
+    // The id of the user will come as parameter
+    const profile = await Profile.findOne({
+      user: req.params.user_id,
+    }).populate("user", ["name", "avatar"]);
+
+    if (!profile) {
+      return res.status(400).json({ msg: "Profile not found" });
+    }
+
+    res.json(profile);
+  } catch (err) {
+    console.error(err.message);
+    // If the passed user_id is invalid for mongo, it will throw an error.
+    // But don't mark it as server error.
+    if (err.kind == "ObjectId") {
+      return res.status(400).json({ msg: "Profile not found" });
+    }
     res.status(500).send("Server Error");
   }
 });
