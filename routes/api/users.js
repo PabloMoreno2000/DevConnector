@@ -27,6 +27,7 @@ router.post(
   ],
   async (req, res) => {
     // The check is done with the second parameter of above within []
+    // Pass the request whose body has a json element
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       // 400 is for a bad request
