@@ -218,6 +218,7 @@ router.put(
       const profile = await Profile.findOne({ user: req.user.id });
       // Unshift appends the item on the first position
       profile.experience.unshift(newExp);
+      // Experience will have its own id on the database despite being within a profile document
       await profile.save();
 
       res.json(profile);
@@ -227,5 +228,31 @@ router.put(
     }
   }
 );
+
+// :exp_id is a placeholder, because of the ":"
+// @route  DELETE api/profile/experience/:exp_id
+// @desct  Delete experience from profile
+// @access Private
+router.delete("/experience/:exp_id", auth, async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ user: req.user.id });
+    // Get experience index to remove
+    // gets all the ids of the experiences, and gets the index of that map corresponding to that experience
+    // exp_id is a parameter because it was sent on the link in the place of :exp_id
+    const removeIndex = profile.experience
+      .map((item) => item.id)
+      .indexOf(req.params.exp_id);
+
+    if (removeIndex != -1) {
+      // splice removes/adds items and returns the removed items
+      profile.experience.splice(removeIndex, 1);
+    }
+    await profile.save();
+    res.json(profile);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
 
 module.exports = router;
