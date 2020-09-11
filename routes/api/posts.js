@@ -108,7 +108,7 @@ router.delete("/:id", auth, async (req, res) => {
 });
 
 // put because we are updating the post, putting like on it
-// @route  PUT api/posts/:id
+// @route  PUT api/posts/like/:id
 // @desct  Like a post
 // @access Private
 router.put("/like/:id", auth, async (req, res) => {
@@ -126,6 +126,37 @@ router.put("/like/:id", auth, async (req, res) => {
     }
 
     post.likes.unshift({ user: req.user.id });
+    await post.save();
+    // returning the likes will be useful in the frontend
+    res.json(post.likes);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route  PUT api/posts/unlike/:id
+// @desct  Unlike a post
+// @access Private
+router.put("/unlike/:id", auth, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+
+    // Check if it has been liked by this user
+    if (
+      post.likes.filter((like) => like.user.toString() == req.user.id).length ==
+      0
+    ) {
+      return res.status(400).json({ msg: "Post has not yet been liked" });
+    }
+
+    // Get remove index
+    // From all the likes of the post, get the index of the one with the current user
+    const removeIndex = post.likes
+      .map((like) => like.user.toString())
+      .indexOf(req.user.id);
+    // Second parameter of splice is how many elements to remove
+    post.likes.splice(removeIndex, 1);
     await post.save();
     // returning the likes will be useful in the frontend
     res.json(post.likes);
