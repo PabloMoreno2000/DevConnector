@@ -30,14 +30,29 @@ router.post(
       };
 
       const post = new Post(newPost);
-      post.save();
+      await post.save();
 
       res.json(post);
-    } catch (error) {
-      console.error(error.message);
+    } catch (err) {
+      console.error(err.message);
       res.status(500).send("server error");
     }
   }
 );
+
+// @route  GET api/posts
+// @desct  Get all posts
+// @access Private
+router.get("/", auth, async (req, res) => {
+  try {
+    // if find has no parameter, it gets all the posts
+    // -1 for recent posts first
+    const posts = await Post.find().sort({ date: -1 });
+    res.json(posts);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("server error");
+  }
+});
 
 module.exports = router;
