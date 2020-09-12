@@ -13,7 +13,9 @@ const App = () => {
         <Navbar />
         <Route exact path="/" component={Landing}></Route>
         <section className="container">
-          {/*display one component depending on the url*/}
+          {/*display one component depending on the url.
+          Navbar won't go anywhere because switch is inside
+          the container.*/}
           <Switch>
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
