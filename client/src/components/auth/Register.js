@@ -24,7 +24,7 @@ const Register = () => {
 
   const onChange = (e) =>
     // ...Something creates a copy of Something, and with the second argument we are just
-    // modifying some values of it. Each input field has a name that coincides with
+    // modifying some values of it. Each input field has a name attribute that coincides with
     // a name withing formData.
     setFormData({ ...formData, [e.target.name]: e.target.value });
 

@@ -8,9 +8,11 @@ import "./App.css";
 
 const App = () => {
   return (
+    /**Everything must be wrapped up within the router */
     <Router>
       <Fragment>
         <Navbar />
+        {/**Shwo the landing page just in the root dir*/}
         <Route exact path="/" component={Landing}></Route>
         <section className="container">
           {/*display one component depending on the url.
