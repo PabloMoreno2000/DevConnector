@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-
+import axios from "axios";
 const Register = () => {
   {
     /* Fragment lets you add multiple children without
@@ -28,12 +28,30 @@ const Register = () => {
     // a name withing formData.
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     if (password !== password2) {
       console.log("Passwords do not match");
     } else {
-      console.log(formData);
+      const newUser = {
+        name,
+        email,
+        password,
+      };
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        const body = JSON.stringify(newUser);
+        // Await axios promise
+        // the proxy in config has the main url to where to make requests
+        const res = await axios.post("/api/users", body, config);
+        console.log(res.data);
+      } catch (error) {
+        console.error(error.response.data);
+      }
     }
   };
 
