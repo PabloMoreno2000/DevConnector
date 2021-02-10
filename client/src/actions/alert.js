@@ -1,3 +1,7 @@
+/*
+"dispatch() is the method used to dispatch actions and trigger state changes to the store. 
+react-redux is simply trying to give you convenient access to it."
+*/
 import { v4 as uuid } from "uuid";
 import { SET_ALERT, REMOVE_ALERT } from "./types";
 

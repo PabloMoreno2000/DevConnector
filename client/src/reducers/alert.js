@@ -1,3 +1,4 @@
+// The reducers catch every dispatch made by any action regarding one of its types
 import { SET_ALERT, REMOVE_ALERT } from "../actions/types";
 // Reducer regarding alerts
 /**
