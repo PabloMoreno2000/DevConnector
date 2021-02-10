@@ -1,4 +1,9 @@
-import { REGISTER_SUCCESS, REGISTER_FAIL } from "../actions/types";
+import {
+  REGISTER_SUCCESS,
+  REGISTER_FAIL,
+  USER_LOADED,
+  AUTH_ERROR,
+} from "../actions/types";
 
 // Initial state for the whole auth reducer
 const initialState = {
@@ -12,6 +17,16 @@ const initialState = {
 export default function (state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
+    case USER_LOADED:
+      return {
+        ...state,
+        // If it was loaded it was authenticated
+        isAuthenticated: true,
+        loading: false,
+        // The payload in this case is the info of the user
+        user: payload,
+      };
+
     case REGISTER_SUCCESS:
       localStorage.setItem("token", payload.token);
       return {
@@ -32,6 +47,17 @@ export default function (state = initialState, action) {
         isAuthenticated: false,
         loading: false,
       };
+
+    case AUTH_ERROR:
+      // No need to store an unvalid token
+      localStorage.removeItem("token");
+      return {
+        ...state,
+        token: null,
+        isAuthenticated: false,
+        loading: false,
+      };
+
     default:
       return state;
   }
