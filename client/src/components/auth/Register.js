@@ -1,6 +1,12 @@
 import React, { Fragment, useState } from "react";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-const Register = () => {
+import { setAlert } from "../../actions/alert";
+// to use props
+import PropTypes from "prop-types";
+
+// Instead of using props and then props.setAlert, get setAlert directly from props with {setAlert}
+const Register = ({ setAlert }) => {
   {
     /* Fragment lets you add multiple children without
   adding extra nodes to the DOM */
@@ -31,7 +37,7 @@ const Register = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     if (password !== password2) {
-      console.log("Passwords do not match");
+      setAlert("Passwords do not match", "danger");
     } else {
       console.log(formData);
     }
@@ -100,4 +106,13 @@ const Register = () => {
   );
 };
 
-export default Register;
+// Stating required props
+Register.propTypes = {
+  //ptrf
+  setAlert: PropTypes.func.isRequired,
+};
+
+// Connect to use redux in this component, it has to be exported like this
+// First connect argument --> any state you wanna map, like alert, profile, etc
+// Second connect argument --> an object with any actions you wanna use
+export default connect(null, { setAlert })(Register);
