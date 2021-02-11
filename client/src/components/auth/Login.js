@@ -1,10 +1,10 @@
 import React, { Fragment, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { login } from "../../actions/auth";
 // Instead of props.login
-const Login = ({ login }) => {
+const Login = ({ login, isAuthenticated }) => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -21,6 +21,11 @@ const Login = ({ login }) => {
     // The action will make a request with this, dispatch a type according to the response, a certain type will do a certain action
     login(email, password);
   };
+
+  // Redirect if logged in
+  if (isAuthenticated) {
+    return <Redirect to="/dashboard" />;
+  }
 
   return (
     <Fragment>
@@ -61,7 +66,13 @@ const Login = ({ login }) => {
 
 Login.propTypes = {
   login: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool,
 };
 
-// passing login as prop
-export default connect(null, { login })(Login);
+const mapStateToProps = (state) => ({
+  //state.auth has all the info of the user
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
+// passing login and isAuthenticated as prop
+export default connect(mapStateToProps, { login })(Login);
