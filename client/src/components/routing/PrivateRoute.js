@@ -16,9 +16,8 @@ const PrivateRoute = ({
   ...rest
 }) => (
   <Route
-    //Whatever was passed to the route... Must stay there
+    //Whatever was passed to the route... Must stay there, like the exact path
     {...rest}
-    // Instead of an exact path, use the render
     render={(props) =>
       !isAuthenticated && !loading ? (
         <Redirect to="/login" />
