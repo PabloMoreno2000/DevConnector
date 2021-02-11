@@ -3,6 +3,8 @@ import {
   REGISTER_FAIL,
   USER_LOADED,
   AUTH_ERROR,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
 } from "../actions/types";
 
 // Initial state for the whole auth reducer
@@ -27,7 +29,9 @@ export default function (state = initialState, action) {
         user: payload,
       };
 
+    // For both cases, the same will happen
     case REGISTER_SUCCESS:
+    case LOGIN_SUCCESS:
       localStorage.setItem("token", payload.token);
       return {
         // Return a copy of the state
@@ -40,15 +44,8 @@ export default function (state = initialState, action) {
       };
 
     case REGISTER_FAIL:
-      localStorage.removeItem("token");
-      return {
-        ...state,
-        token: null,
-        isAuthenticated: false,
-        loading: false,
-      };
-
     case AUTH_ERROR:
+    case LOGIN_FAIL:
       // No need to store an unvalid token
       localStorage.removeItem("token");
       return {

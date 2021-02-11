@@ -22,7 +22,7 @@ const App = () => {
     useEffect is like a componentDidMount when used like this.
     Normally it will keep running forever, but not if we add the brackets []
     as second parameter, in that case it will run just once in mount and unmount.
-    Every time the page is loaded it will check for a valid token
+    Every time the page is loaded it will check for a valid token and do the auth process
   */
   useEffect(() => {
     // Remember to use dispatch when a modification in the state of a reducer is going to happen
