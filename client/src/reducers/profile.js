@@ -1,4 +1,4 @@
-import { GET_PROFILE, PROFILE_ERROR } from "../actions/types";
+import { CLEAR_PROFILE, GET_PROFILE, PROFILE_ERROR } from "../actions/types";
 
 const initialState = {
   // Your profile, or a profile you are checking
@@ -18,7 +18,7 @@ export default function (state = initialState, action) {
     case GET_PROFILE:
       return {
         ...state,
-        // profile is sent if the request is successful when dispatching get_profile in profiles actions
+        // profile is sent if the request is successful when dispatching get_profile in any action file
         profile: payload,
         // Request is done
         loading: false,
@@ -27,7 +27,14 @@ export default function (state = initialState, action) {
       return {
         ...state,
         error: payload,
-        loading: true,
+        loading: false,
+      };
+    case CLEAR_PROFILE:
+      return {
+        ...state,
+        profile: null,
+        repos: [],
+        loading: false,
       };
     default:
       return state;
