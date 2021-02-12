@@ -4,11 +4,13 @@ import {
   CLEAR_PROFILE,
   ACCOUNT_DELETED,
   GET_PROFILE,
+  GET_PROFILES,
+  GET_REPOS,
   PROFILE_ERROR,
   UPDATE_PROFILE,
 } from "./types";
 
-// Get current users profile
+// Get current user's profile
 export const getCurrentProfile = () => async (dispatch) => {
   try {
     // token has user id, the token is set in App.js after checking local storage
@@ -25,6 +27,70 @@ export const getCurrentProfile = () => async (dispatch) => {
       payload: {
         msg: error.response.statusText,
         // http request status
+        status: error.response.status,
+      },
+    });
+  }
+};
+
+// Get all profiles
+export const getProfiles = () => async (dispatch) => {
+  // Not necessary, but delete the profile from the store(not the backend), when checking more profiles
+  dispatch({
+    type: CLEAR_PROFILE,
+  });
+  try {
+    const res = await axios.get("/api/profile");
+    dispatch({
+      type: GET_PROFILES,
+      payload: res.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: {
+        msg: error.response.statusText,
+        status: error.response.status,
+      },
+    });
+  }
+};
+
+// Get profile by ID
+export const getProfileById = (userId) => async (dispatch) => {
+  try {
+    const res = await axios.get(`/api/profile/${userId}`);
+    // The profile of the requested user will go to profile state even if it is not our own profile
+    dispatch({
+      type: GET_PROFILE,
+      payload: res.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: {
+        msg: error.response.statusText,
+        status: error.response.status,
+      },
+    });
+  }
+};
+
+// Get github repos
+export const getGithubRepos = (githubUsername) => async (dispatch) => {
+  try {
+    const res = await axios.get(`/api/profile/github/${githubUsername}`);
+    // The profile of the requested user will go to profile state even if it is not our own profile
+    dispatch({
+      type: GET_REPOS,
+      // The repos
+      payload: res.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: {
+        msg: error.response.statusText,
         status: error.response.status,
       },
     });

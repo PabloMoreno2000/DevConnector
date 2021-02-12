@@ -3,6 +3,8 @@ import {
   GET_PROFILE,
   UPDATE_PROFILE,
   PROFILE_ERROR,
+  GET_PROFILES,
+  GET_REPOS,
 } from "../actions/types";
 
 const initialState = {
@@ -27,6 +29,18 @@ export default function (state = initialState, action) {
         // profile is sent if the request is successful when dispatching get_profile in any action file
         profile: payload,
         // Request is done
+        loading: false,
+      };
+    case GET_PROFILES:
+      return {
+        ...state,
+        profiles: payload,
+        loading: false,
+      };
+    case GET_REPOS:
+      return {
+        ...state,
+        repos: payload,
         loading: false,
       };
     case PROFILE_ERROR:
