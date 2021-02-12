@@ -24,3 +24,40 @@ export const getCurrentProfile = () => async (dispatch) => {
     });
   }
 };
+
+// Create or update
+export const createProfile = (formData, history, edit = false) => async (
+  dispatch
+) => {
+  try {
+    const config = { headers: { "Content-Type": "application/json" } };
+    const res = await axios.post("/api/profile", formData, config);
+    // To get the new version
+    dispatch({
+      type: GET_PROFILE,
+      // new profile data
+      payload: res.data,
+    });
+
+    dispatch(setAlert(edit ? "Profile Udated" : "Profile Created", "success"));
+    // Redirect just if creating new profile
+    if (!edit) {
+      // Push a new page to navigation history to redirect
+      history.push("/dashboard");
+    }
+  } catch (error) {
+    // Display errors sent by the backend
+    const errors = error.response.data.errors;
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+    }
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: {
+        msg: error.response.statusText,
+        // http request status
+        status: error.response.status,
+      },
+    });
+  }
+};
