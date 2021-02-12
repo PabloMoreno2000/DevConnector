@@ -6,6 +6,7 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
+  ACCOUNT_DELETED,
 } from "../actions/types";
 
 // Initial state for the whole auth reducer
@@ -48,6 +49,7 @@ export default function (state = initialState, action) {
     case AUTH_ERROR:
     case LOGIN_FAIL:
     case LOGOUT:
+    case ACCOUNT_DELETED:
       // No need to store an unvalid token
       localStorage.removeItem("token");
       return {
