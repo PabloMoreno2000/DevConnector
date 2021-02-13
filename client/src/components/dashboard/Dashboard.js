@@ -14,10 +14,10 @@ const Dashboard = ({
   profile: { profile, loading },
 }) => {
   // To call the action as soon as the component loads, use this hook
-  // Empty set of brackets to run just once
+  // brackets with just the function itself indicating dependency, to run just once
   useEffect(() => {
     getCurrentProfile();
-  }, []);
+  }, [getCurrentProfile]);
 
   return loading && profile == null ? (
     <Spinner />

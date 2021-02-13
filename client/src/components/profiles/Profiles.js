@@ -9,7 +9,8 @@ import { getProfiles } from "../../actions/profile";
 const Profiles = ({ getProfiles, profile: { profiles, loading } }) => {
   useEffect(() => {
     getProfiles();
-  }, []);
+    // Add the function itsel as a dependency, it is like an empty array but more correct
+  }, [getProfiles]);
   return (
     <Fragment>
       {loading ? (

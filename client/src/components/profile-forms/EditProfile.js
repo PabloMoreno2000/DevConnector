@@ -63,7 +63,8 @@ const EditProfile = ({
       linkedin: loading || !profile.social ? "" : profile.social.linkedin,
     });
     // [loading] means keep this running while loading
-  }, [loading]);
+    // getCurrentProfile is also a dependency, so put it
+  }, [loading, getCurrentProfile]);
 
   // A copy of form data, but modifying e.target.name
   // names in input must match variable state names
