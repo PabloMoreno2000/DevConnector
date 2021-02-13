@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Spinner from "../layout/Spinner";
+import ProfileTop from "./ProfileTop";
+import ProfileAbout from "./ProfileAbout";
 import { getProfileById } from "../../actions/profile";
 
 // match is a default value inside props
@@ -16,7 +18,9 @@ const Profile = ({
     // the route of this component was declares as something/:id, so this matches for the id passed as parameter in the endpoint
     // This will put the profile visited in the state
     getProfileById(match.params.id);
-  }, [getProfileById]);
+    // Basically but everything you use in that array
+    // If no array is giving the hook will keep executing itself
+  }, [getProfileById, match.params.id]);
   return (
     <Fragment>
       {profile === null || loading ? (
@@ -36,6 +40,10 @@ const Profile = ({
                 </Link>
               )
           }
+          <div className="profile-grid my-1">
+            <ProfileTop profile={profile} />
+            <ProfileAbout profile={profile} />
+          </div>
         </Fragment>
       )}
     </Fragment>
