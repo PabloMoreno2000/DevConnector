@@ -7,6 +7,7 @@ import ProfileTop from "./ProfileTop";
 import ProfileAbout from "./ProfileAbout";
 import ProfileExperience from "./ProfileExperience";
 import ProfileEducation from "./ProfileEducation";
+import ProfileGithub from "./ProfileGithub";
 import { getProfileById } from "../../actions/profile";
 
 // match is a default value inside props
@@ -66,7 +67,7 @@ const Profile = ({
             <div className="profile-edu bg-white p-2">
               <h2 className="text-primary">Education</h2>
               {
-                // Loop through experience array and render each one if the array is not empty
+                // Loop through education array and render each one if the array is not empty
                 profile.education.length > 0 ? (
                   <Fragment>
                     {profile.education.map((education) => (
@@ -81,6 +82,9 @@ const Profile = ({
                 )
               }
             </div>
+            {profile.githubusername && (
+              <ProfileGithub username={profile.githubusername} />
+            )}
           </div>
         </Fragment>
       )}
